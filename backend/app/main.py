@@ -107,3 +107,8 @@ async def api_endpoint(req: ResearchRequest):
         key = mapping.get(step, step)
         result[key] = update.get("data")
     return result
+
+@app.get("/healthz")
+async def healthz():
+    return {"status": "ok"}
+
