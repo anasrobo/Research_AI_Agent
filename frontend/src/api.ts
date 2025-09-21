@@ -1,6 +1,10 @@
 import axios from 'axios'
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8000'
+// Use env variable, must be set in frontend/.env or Render env
+const API_BASE = import.meta.env.VITE_API_BASE
+if (!API_BASE) {
+  throw new Error("VITE_API_BASE is not set. Make sure you configured your frontend environment variable.")
+}
 
 // Existing long-running research flow (kept for compatibility with current backend)
 export const startResearch = async (query: string): Promise<string> => {
@@ -29,7 +33,7 @@ export const getTask = async (taskId: string): Promise<TaskData> => {
   return data
 }
 
-// One-shot FastAPI endpoint (requested): POST http://localhost:8000/api/endpoint
+// One-shot FastAPI endpoint
 export type OneShotResponse = {
   Planning?: any
   Searching?: any
@@ -45,7 +49,7 @@ export type OneShotResponse = {
   } | any
 }
 
-export const runOneShotResearch = async (query: string, endpoint = `${API_BASE}/api/endpoint`): Promise<OneShotResponse> => {
-  const { data } = await axios.post(endpoint, { query })
+export const runOneShotResearch = async (query: string): Promise<OneShotResponse> => {
+  const { data } = await axios.post(`${API_BASE}/api/endpoint`, { query })
   return data
 }
