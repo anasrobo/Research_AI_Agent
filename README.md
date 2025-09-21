@@ -26,17 +26,17 @@ Hackathon-ready, end-to-end AI Research Agent that plans, searches, reads, verif
 ```mermaid
 flowchart LR
   UI[React + Vite + Tailwind] -- Axios --> API[(FastAPI)]
-  subgraph Agent Pipeline
+  subgraph AgentPipeline["Agent Pipeline"]
     P[Planner] --> S[Searcher]
     S --> R[Reader]
     R --> V[Verifier]
     V --> F[Reflector]
     F --> B[Briefer]
   end
-  API -. async updates .-> Agent Pipeline
-  Agent Pipeline -->|uses| RAG[(Pathway RAG Index)]
-  subgraph Ingestion
-    FS[[/backend/app/static/ingest]] --> Pathway[Pathway streaming]
+  API -. async updates .-> AgentPipeline
+  AgentPipeline -->|uses| RAG[(Pathway RAG Index)]
+  subgraph Ingestion["Ingestion"]
+    IngestFS[[backend/app/static/ingest/]] --> Pathway[Pathway streaming]
   end
   Pathway --> RAG
 ```
