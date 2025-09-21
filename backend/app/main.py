@@ -6,6 +6,7 @@ from typing import Dict, Any
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 
 from .agent import run_pipeline
@@ -108,7 +109,12 @@ async def api_endpoint(req: ResearchRequest):
         result[key] = update.get("data")
     return result
 
+# Health check for Render
 @app.get("/healthz")
 async def healthz():
     return {"status": "ok"}
 
+# Root route (so Render and humans don’t get 404s)
+@app.get("/", include_in_schema=False)
+async def root():
+    return {"message": "Research AI Agent is live 🚀", "docs": "/docs"}
